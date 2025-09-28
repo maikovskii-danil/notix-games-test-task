@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+#root {
+  margin: 0 auto;
+  ul {
+    list-style: none;
+  }
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter';
+}
