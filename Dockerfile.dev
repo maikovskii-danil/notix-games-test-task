@@ -6,4 +6,4 @@ COPY ./package-lock.json .
 RUN npm ci --ignore-scripts --audit false --fund false
 COPY . .
 EXPOSE 5173
-CMD ["npx", "vite", "--port", "5173"]
+CMD ["node", "./server.js"]
