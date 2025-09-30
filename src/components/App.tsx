@@ -7,6 +7,7 @@ const debouncedFetchFn = debounce(
   (
     search: string,
     setSearchResult: (result: Array<{ id: number; title: string }>) => void,
+    setIsFetching: (value: boolean) => void,
   ) => {
     if (abortController) {
       abortController.abort();
@@ -16,6 +17,7 @@ const debouncedFetchFn = debounce(
 
     const signal = abortController.signal;
 
+    setIsFetching(true);
     fetch('/api/rest/suggestions?search=' + search, { signal })
       .then((response) => response.json())
       .then(
@@ -29,7 +31,10 @@ const debouncedFetchFn = debounce(
           }
           setSearchResult(json.data);
         },
-      );
+      )
+      .finally(() => {
+        setIsFetching(false);
+      });
   },
 );
 
@@ -38,9 +43,10 @@ export default function App() {
   const [searchResult, setSearchResult] = useState<
     Array<{ id: number; title: string }>
   >([]);
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
-    debouncedFetchFn(search, setSearchResult);
+    debouncedFetchFn(search, setSearchResult, setIsFetching);
   }, [search, setSearchResult]);
 
   return (
@@ -55,18 +61,20 @@ export default function App() {
           setSearch(evt.target.value);
         }}
       />
-      {searchResult
-        .filter((item) =>
-          item.title.toLowerCase().includes(search.toLowerCase()),
-        )
-        .map((item) => (
-          <div
-            key={item.id}
-            className="text-gray-200 bg-gray-900 mt-2 p-2 rounded"
-          >
-            {item.title}
-          </div>
-        ))}
+      {searchResult.map((item) => (
+        <div
+          key={item.id}
+          className="text-gray-200 bg-gray-900 mt-2 p-2 rounded"
+        >
+          {item.title}
+        </div>
+      ))}
+      {!searchResult.length && !isFetching && (
+        <div className="text-gray-200 text-xl p-2">'{search}' not found</div>
+      )}
+      {isFetching && (
+        <div className="text-gray-200 text-xl p-2">loading...</div>
+      )}
     </div>
   );
 }
