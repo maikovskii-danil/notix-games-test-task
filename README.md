@@ -1,7 +1,5 @@
 # React Test Task
 
-🖥️ Developed and tested on macOS/Linux (Chrome)
-
 #### Запускайте через Docker (у вас он в вакансии как раз был указан), это нужно для кроссплатформенной совместимости, иначе приложение не будет работать на вашей ОС или из-за не тех версий npm/node
 
 - Dev image: `npm run docker:dev` (для дополнительной информации - Dockerfile.dev в корне проекта)
