@@ -55,7 +55,8 @@
   },
   "os": [
     "darwin",
-    "linux"
+    "linux",
+    "win32"
   ],
   "devEngines": {
     "runtime": {
